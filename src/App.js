@@ -1,5 +1,5 @@
 import React from "react";
-import Square from "./Square";
+import Board from "./Board";
 
 /**
  * App
@@ -8,7 +8,7 @@ import Square from "./Square";
 function App() {
   return (
     <>
-      <Square />
+      <Board />
     </>
   );
 }
