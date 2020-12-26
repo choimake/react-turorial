@@ -1,5 +1,5 @@
 import React from "react";
-import Board from "./Board";
+import Game from "./Game";
 
 /**
  * App
@@ -8,7 +8,7 @@ import Board from "./Board";
 function App() {
   return (
     <>
-      <Board />
+      <Game />
     </>
   );
 }
