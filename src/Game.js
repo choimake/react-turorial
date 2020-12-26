@@ -60,6 +60,15 @@ const Game = () => {
     ? "Winner: " + judgeTheWinner()
     : "Next Player: " + (xIsNext ? "X" : "O");
 
+  const moves = history.map((step, move) => {
+    const desc = move ? "Go to move #" + move : "Go to game start";
+    return (
+      <li key={move}>
+        <button>{desc}</button>
+      </li>
+    );
+  });
+
   return (
     <div className="game">
       <div className="game-board">
@@ -67,6 +76,7 @@ const Game = () => {
       </div>
       <div className="game-info">
         <div>{status}</div>
+        <div>{moves}</div>
       </div>
     </div>
   );
