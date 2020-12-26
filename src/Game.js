@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import Board from "./Board";
 
 const Game = () => {
-  // gameの履歴
+  // gameBoardのそれぞれの値
   const [squares, setSquares] = useState(Array(9).fill(null));
-  // const [history] = useState([{ squares: Array(9).fill(null) }]);
+  // gameの履歴
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
+  // Xのターン判定
+  const [xIsNext, setXIsNext] = useState(true);
+
   const handleClick = (index) => {
-    const s = squares.slice();
+    const h = history.slice();
+    const current = h[h.length - 1];
+    const s = current.squares.slice();
     // すでに値が入力されている場合には何もしない
     if (s[index]) {
       return;
@@ -18,9 +24,9 @@ const Game = () => {
     s[index] = xIsNext ? "X" : "O";
     setSquares(s);
     turnChange();
+    setHistory(h.concat([{ squares: s }]));
   };
 
-  const [xIsNext, setXIsNext] = useState(true);
   const judgeTheWinner = () => {
     // 一方向のマスの値が全て同じ値で揃えたユーザーの勝ち
     const lines = [
@@ -45,6 +51,7 @@ const Game = () => {
     }
     return null;
   };
+
   const turnChange = () => {
     setXIsNext(!xIsNext);
   };
@@ -52,13 +59,15 @@ const Game = () => {
   const status = judgeTheWinner()
     ? "Winner: " + judgeTheWinner()
     : "Next Player: " + (xIsNext ? "X" : "O");
+
   return (
     <div className="game">
       <div className="game-board">
-        <div className="status">{status}</div>
         <Board squares={squares} onClick={(i) => handleClick(i)} />
       </div>
-      <div className="game-info"></div>
+      <div className="game-info">
+        <div>{status}</div>
+      </div>
     </div>
   );
 };
