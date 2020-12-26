@@ -4,7 +4,7 @@ env:
 extends:
   - 'plugin:react/recommended'
   - google
-  - "plugin:prettier/recommended"
+  - 'plugin:prettier/recommended'
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -13,3 +13,6 @@ parserOptions:
 plugins:
   - react
 rules: {}
+settings:
+  react:
+    version: 'latest'
