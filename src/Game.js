@@ -4,15 +4,16 @@ import Board from "./Board";
 const Game = () => {
   // gameBoardのそれぞれの値
   const [squares, setSquares] = useState(Array(9).fill(null));
+  // game進行度合いを示す値
+  const [step, setStep] = useState(0);
   // gameの履歴
   const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
   // Xのターン判定
   const [xIsNext, setXIsNext] = useState(true);
 
   const handleClick = (index) => {
-    const h = history.slice();
-    const current = h[h.length - 1];
-    const s = current.squares.slice();
+    const c = current();
+    const s = c.squares.slice();
     // すでに値が入力されている場合には何もしない
     if (s[index]) {
       return;
@@ -24,7 +25,14 @@ const Game = () => {
     s[index] = xIsNext ? "X" : "O";
     setSquares(s);
     turnChange();
+    const h = history.slice(0, step + 1);
     setHistory(h.concat([{ squares: s }]));
+    setStep(step + 1);
+  };
+
+  const current = () => {
+    const h = history.slice(0, step + 1);
+    return h[step];
   };
 
   const judgeTheWinner = () => {
@@ -60,11 +68,16 @@ const Game = () => {
     ? "Winner: " + judgeTheWinner()
     : "Next Player: " + (xIsNext ? "X" : "O");
 
+  const jumpTo = (move) => {
+    setStep(move);
+    setXIsNext(step % 2 === 0);
+  };
+
   const moves = history.map((step, move) => {
     const desc = move ? "Go to move #" + move : "Go to game start";
     return (
       <li key={move}>
-        <button>{desc}</button>
+        <button onClick={() => jumpTo(move)}>{desc}</button>
       </li>
     );
   });
@@ -72,12 +85,13 @@ const Game = () => {
   return (
     <div className="game">
       <div className="game-board">
-        <Board squares={squares} onClick={(i) => handleClick(i)} />
+        <Board squares={current().squares} onClick={(i) => handleClick(i)} />
       </div>
       <div className="game-info">
         <div>{status}</div>
         <div>{moves}</div>
       </div>
+      <div>{step}</div>
     </div>
   );
 };
